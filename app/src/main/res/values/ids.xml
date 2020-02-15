@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="serverHostEditText" type="id" />
+    <item name="serverPortEditText" type="id" />
+    <item name="userNameEditText" type="id" />
+    <item name="passwordEditText" type="id" />
+    <item name="firstNameEditText" type="id" />
+    <item name="lastNameEditText" type="id" />
+    <item name="emailEditText" type="id" />
+    <item name="genderRadioGroup" type="id" />
+    <item name="maleRadioButton" type="id" />
+    <item name="femaleRadioButton" type="id" />
+    <item name="sign_up_button" type="id" />
+</resources>

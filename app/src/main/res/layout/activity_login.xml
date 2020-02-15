@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <TableLayout android:stretchColumns="3" android:layout_margin="30dp" android:layout_height="match_parent" android:layout_width="match_parent" xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent">
+
+            <TextView
+                android:id="@+id/serverHostTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingTop="15dp"
+                android:text="@string/server_host"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/serverHostEditText" android:inputType="text" android:layout_span="3"/>
+
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+
+        </TableRow>
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/server_port" android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="10dp" android:layout_gravity="end" android:id="@+id/serverPortTextView"/>
+
+            <EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/serverPortEditText" android:inputType="text" android:layout_span="3"/>
+
+        </TableRow>
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/user_name" android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="10dp" android:layout_gravity="end" android:id="@+id/userNameTextView"/>
+
+            <EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/userNameEditText" android:inputType="text" android:layout_span="3"/>
+
+        </TableRow>
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/password" android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="10dp" android:layout_gravity="end" android:id="@+id/passwordTextView"/>
+
+            <EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/passwordEditText" android:inputType="text" android:layout_span="3"/>
+
+        </TableRow>
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/first_name" android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="10dp" android:layout_gravity="end" android:id="@+id/firstNameTextView"/>
+
+            <EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/firstNameEditText" android:inputType="text" android:layout_span="3"/>
+
+        </TableRow>
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/last_name" android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="10dp" android:layout_gravity="end" android:id="@+id/lastNameTextView"/>
+
+            <EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/lastNameEditText" android:inputType="text" android:layout_span="3"/>
+
+        </TableRow>
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/email" android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="10dp" android:layout_gravity="end" android:id="@+id/emailTextView"/>
+
+            <EditText android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/emailEditText" android:inputType="text" android:layout_span="3"/>
+
+        </TableRow>
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/gender" android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="10dp" android:layout_gravity="end" android:id="@+id/genderTextView"/>
+
+
+            <RadioGroup android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/genderRadioGroup">
+
+                <RadioButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/male" android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="10dp" android:id="@+id/maleRadioButton" android:paddingBottom="10dp"/>
+
+                <RadioButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/female" android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="10dp" android:id="@+id/femaleRadioButton" android:paddingBottom="10dp"/>
+
+            </RadioGroup>
+
+        </TableRow>
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_gravity="center"/>
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="wrap_content">
+
+            <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/loginButton" android:id="@+id/login_button" android:layout_column="1"/>
+
+            <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/registerButton" android:id="@+id/register_button" android:layout_column="2"/>
+
+        </TableRow>
+
+    </TableLayout>
+</ScrollView>

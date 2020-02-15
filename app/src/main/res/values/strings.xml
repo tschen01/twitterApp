@@ -12,4 +12,16 @@
 
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
+    <string name="server_host" />
+    <string name="server_port" />
+    <string name="user_name" />
+    <string name="password" />
+    <string name="first_name" />
+    <string name="last_name" />
+    <string name="email" />
+    <string name="gender" />
+    <string name="male" />
+    <string name="female" />
+    <string name="loginButton" />
+    <string name="registerButton" />
 </resources>

@@ -20,7 +20,16 @@
             android:padding="@dimen/appbar_padding"
             android:text="@string/app_name"
             android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
-
+        <Button
+            android:id="@+id/signout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="signout"
+            android:background="@color/colorBlue"
+            android:layout_marginRight="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/button_text_color"
+            />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
