@@ -109,7 +109,7 @@
 
             <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/loginButton" android:id="@+id/login_button" android:layout_column="1"/>
 
-            <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/registerButton" android:id="@+id/register_button" android:layout_column="2"/>
+            <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/registerButton" android:id="@+id/sign_up_button" android:layout_column="2"/>
 
         </TableRow>
 

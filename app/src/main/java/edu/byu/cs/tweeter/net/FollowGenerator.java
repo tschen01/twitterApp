@@ -12,6 +12,7 @@ import java.util.Set;
 
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.presenter.Presenter;
 
 /**
  * A temporary class that generates and returns Follow objects. This class may be removed when the
@@ -20,6 +21,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 public class FollowGenerator {
 
     private static FollowGenerator followGenerator;
+    private User user;
 
     /**
      * An enum used to specify the sort order of {@link Follow} object returned by this generator.
@@ -34,16 +36,16 @@ public class FollowGenerator {
      * A private constructor that ensures no instances of this class can be created from outside
      * the class.
      */
-    private FollowGenerator() {}
+    private FollowGenerator(User user) {this.user = user;}
 
     /**
      * Returns the singleton instance of the class
      *
      * @return the instance.
      */
-    public static FollowGenerator getInstance() {
+    public static FollowGenerator getInstance(User user) {
         if(followGenerator == null) {
-            followGenerator = new FollowGenerator();
+            followGenerator = new FollowGenerator(user);
         }
 
         return followGenerator;
@@ -101,7 +103,7 @@ public class FollowGenerator {
         }
 
         // Add the test user and make him follow everyone
-        User testUser = new User("Test", "User", UserGenerator.MALE_IMAGE_URL);
+        User testUser = new User(user.getFirstName(),user.getLastName(), UserGenerator.MALE_IMAGE_URL);
 
         for(User user : users) {
             Follow follow = new Follow(testUser, user);

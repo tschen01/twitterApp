@@ -8,7 +8,9 @@ import java.util.Map;
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.net.request.FollowingRequest;
+import edu.byu.cs.tweeter.net.request.LoginRequest;
 import edu.byu.cs.tweeter.net.response.FollowingResponse;
+import edu.byu.cs.tweeter.net.response.LoginResponse;
 
 public class ServerFacade {
 
@@ -20,7 +22,7 @@ public class ServerFacade {
         assert request.getFollower() != null;
 
         if(followeesByFollower == null) {
-            followeesByFollower = initializeFollowees();
+            followeesByFollower = initializeFollowees(request.getFollower());
         }
 
         List<User> allFollowees = followeesByFollower.get(request.getFollower());
@@ -65,11 +67,11 @@ public class ServerFacade {
     /**
      * Generates the followee data.
      */
-    private Map<User, List<User>> initializeFollowees() {
+    private Map<User, List<User>> initializeFollowees(User user) {
 
         Map<User, List<User>> followeesByFollower = new HashMap<>();
 
-        List<Follow> follows = getFollowGenerator().generateUsersAndFollows(100,
+        List<Follow> follows = getFollowGenerator(user).generateUsersAndFollows(100,
                 0, 50, FollowGenerator.Sort.FOLLOWER_FOLLOWEE);
 
         // Populate a map of followees, keyed by follower so we can easily handle followee requests
@@ -93,7 +95,19 @@ public class ServerFacade {
      *
      * @return the generator.
      */
-    FollowGenerator getFollowGenerator() {
-        return FollowGenerator.getInstance();
+    FollowGenerator getFollowGenerator(User user) {
+        return FollowGenerator.getInstance(user);
+    }
+
+    public LoginResponse getLoginUser(LoginRequest request){
+        boolean success = true;
+
+        User user = new User(request.getFirstName(), request.getLastName(),"https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
+        LoginResponse response = new LoginResponse(success,user);
+        return response;
+    }
+
+    public void logout(){
+        followeesByFollower = null;
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.net.request.LoginRequest;
 import edu.byu.cs.tweeter.net.response.LoginResponse;
 import edu.byu.cs.tweeter.presenter.LoginPresenter;
@@ -22,21 +23,22 @@ public class LoginTask extends AsyncTask<LoginRequest, Void, User> {
     }
 
     public interface GetLoginObserver {
-        void loginRetrieved(LoginResponse loginResponse);
+        void loginRetrieved(User user);
     }
 
 
-    public LoginTask(LoginPresenter presenter){this.presenter = presenter;}
+//    public LoginTask(LoginPresenter presenter){this.presenter = presenter;}
 
     @Override
     protected User doInBackground(LoginRequest... loginRequests) {
-        User result = presenter.getCurrentUser(loginRequests[0]);
+        User result = presenter.setCurrentUser(loginRequests[0]);
         return result;
     }
 
     @Override
     protected void onPostExecute(User result) {
-
-        DataCache.getInstance().cacheUser(currentUser);
+        if(observer != null) {
+            observer.loginRetrieved(result);
+        }
     }
 }

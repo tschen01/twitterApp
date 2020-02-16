@@ -11,4 +11,6 @@
     <item name="maleRadioButton" type="id" />
     <item name="femaleRadioButton" type="id" />
     <item name="sign_up_button" type="id" />
+    <item name="login_button" type="id" />
+    <item name="signUp_button" type="id" />
 </resources>

@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.presenter;
 
+import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.services.LoginService;
 import edu.byu.cs.tweeter.net.request.LoginRequest;
 
@@ -19,7 +20,7 @@ public class LoginPresenter extends Presenter {
     }
 
     public User setCurrentUser(LoginRequest request){
-        LoginService service = new LoginService(request);
-        return service.getInstance().getCurrentUser();
+
+        return LoginService.getInstance().login(request).getUser();
     }
 }

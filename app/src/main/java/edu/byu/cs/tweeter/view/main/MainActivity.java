@@ -18,13 +18,19 @@ import android.widget.TextView;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.net.request.LoginRequest;
+import edu.byu.cs.tweeter.presenter.LoginPresenter;
+import edu.byu.cs.tweeter.presenter.LogoutPresenter;
 import edu.byu.cs.tweeter.presenter.MainPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.LoadImageTask;
+import edu.byu.cs.tweeter.view.asyncTasks.LoginTask;
+import edu.byu.cs.tweeter.view.asyncTasks.LogoutTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
 
-public class MainActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, MainPresenter.View {
+public class MainActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, MainPresenter.View, LogoutPresenter.View {
 
     private MainPresenter presenter;
+    private LogoutPresenter logoutPresenter = new LogoutPresenter(this);
     private User user;
     private ImageView userImageView;
     private Button mSignOutButton;
@@ -42,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
             @Override
             public void onClick(View v)
             {
+                LogoutTask logoutTask=new LogoutTask(logoutPresenter);
+                logoutTask.execute();
                 Intent intent = new Intent(getBaseContext(),LoginActivity.class);
                 startActivity(intent);
             }
