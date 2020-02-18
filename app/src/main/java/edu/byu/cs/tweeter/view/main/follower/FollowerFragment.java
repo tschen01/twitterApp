@@ -1,12 +1,7 @@
-package edu.byu.cs.tweeter.view.main.following;
+package edu.byu.cs.tweeter.view.main.follower;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,53 +14,59 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.net.request.FollowingRequest;
-import edu.byu.cs.tweeter.net.response.FollowingResponse;
-import edu.byu.cs.tweeter.presenter.FollowingPresenter;
-import edu.byu.cs.tweeter.view.asyncTasks.GetFollowingTask;
+import edu.byu.cs.tweeter.model.services.LoginService;
+import edu.byu.cs.tweeter.net.request.FollowerRequest;
+import edu.byu.cs.tweeter.net.response.FollowerResponse;
+import edu.byu.cs.tweeter.presenter.FollowerPresenter;
+import edu.byu.cs.tweeter.view.asyncTasks.GetFollowerTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
+import edu.byu.cs.tweeter.view.main.MainActivity;
 
-public class FollowerFragment extends Fragment implements FollowingPresenter.View {
+public class FollowerFragment extends Fragment implements FollowerPresenter.View {
 
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
 
     private static final int PAGE_SIZE = 10;
 
-    private FollowingPresenter presenter;
+    private FollowerPresenter presenter;
 
-    private FollowingRecyclerViewAdapter followingRecyclerViewAdapter;
+    private FollowerRecyclerViewAdapter followerRecyclerViewAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_following, container, false);
 
-        presenter = new FollowingPresenter(this);
+        presenter = new FollowerPresenter(this);
 
-        RecyclerView followingRecyclerView = view.findViewById(R.id.followingRecyclerView);
+        RecyclerView followerRecyclerView = view.findViewById(R.id.followingRecyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
-        followingRecyclerView.setLayoutManager(layoutManager);
+        followerRecyclerView.setLayoutManager(layoutManager);
 
-        followingRecyclerViewAdapter = new FollowingRecyclerViewAdapter();
-        followingRecyclerView.setAdapter(followingRecyclerViewAdapter);
+        followerRecyclerViewAdapter = new FollowerRecyclerViewAdapter();
+        followerRecyclerView.setAdapter(followerRecyclerViewAdapter);
 
-        followingRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
+        followerRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
 
         return view;
     }
 
 
-    private class FollowingHolder extends RecyclerView.ViewHolder {
+    private class FollowerHolder extends RecyclerView.ViewHolder {
 
         private final ImageView userImage;
         private final TextView userAlias;
         private final TextView userName;
 
-        FollowingHolder(@NonNull View itemView) {
+        FollowerHolder(@NonNull final View itemView) {
             super(itemView);
 
             userImage = itemView.findViewById(R.id.userImage);
@@ -76,6 +77,10 @@ public class FollowerFragment extends Fragment implements FollowingPresenter.Vie
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getContext(), "You selected '" + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                    LoginService.getInstance().setCurrentUser(presenter.getUserByAlias(userAlias.getText().toString()));
+
+                    Intent intent = new Intent(view.getContext(), MainActivity.class);
+                    itemView.getContext().startActivity(intent);
                 }
             });
         }
@@ -87,16 +92,16 @@ public class FollowerFragment extends Fragment implements FollowingPresenter.Vie
         }
     }
 
-    private class FollowingRecyclerViewAdapter extends RecyclerView.Adapter<FollowingHolder> implements GetFollowingTask.GetFolloweesObserver {
+    private class FollowerRecyclerViewAdapter extends RecyclerView.Adapter<FollowerHolder> implements GetFollowerTask.GetFollowersObserver {
 
         private final List<User> users = new ArrayList<>();
 
-        private edu.byu.cs.tweeter.model.domain.User lastFollowee;
+        private User lastFollower;
 
         private boolean hasMorePages;
         private boolean isLoading = false;
 
-        FollowingRecyclerViewAdapter() {
+        FollowerRecyclerViewAdapter() {
             loadMoreItems();
         }
 
@@ -119,8 +124,8 @@ public class FollowerFragment extends Fragment implements FollowingPresenter.Vie
 
         @NonNull
         @Override
-        public FollowingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(FollowingFragment.this.getContext());
+        public FollowerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(FollowerFragment.this.getContext());
             View view;
 
             if(isLoading) {
@@ -130,11 +135,11 @@ public class FollowerFragment extends Fragment implements FollowingPresenter.Vie
                 view = layoutInflater.inflate(R.layout.user_row, parent, false);
             }
 
-            return new FollowingHolder(view);
+            return new FollowerHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull FollowingHolder followingHolder, int position) {
+        public void onBindViewHolder(@NonNull FollowerHolder followingHolder, int position) {
             if(!isLoading) {
                 followingHolder.bindUser(users.get(position));
             }
@@ -155,21 +160,21 @@ public class FollowerFragment extends Fragment implements FollowingPresenter.Vie
             isLoading = true;
             addLoadingFooter();
 
-            GetFollowingTask getFollowingTask = new GetFollowingTask(presenter, this);
-            FollowingRequest request = new FollowingRequest(presenter.getCurrentUser(), PAGE_SIZE, lastFollowee);
-            getFollowingTask.execute(request);
+            GetFollowerTask getFollowerTask = new GetFollowerTask(presenter, this);
+            FollowerRequest request = new FollowerRequest(presenter.getCurrentUser(), PAGE_SIZE, lastFollower);
+            getFollowerTask.execute(request);
         }
 
         @Override
-        public void followeesRetrieved(FollowingResponse followingResponse) {
-            List<User> followees = followingResponse.getFollowees();
+        public void followersRetrieved(FollowerResponse followingResponse) {
+            List<User> followers = followingResponse.getFollowers();
 
-            lastFollowee = (followees.size() > 0) ? followees.get(followees.size() -1) : null;
+            lastFollower = (followers.size() > 0) ? followers.get(followers.size() -1) : null;
             hasMorePages = followingResponse.hasMorePages();
 
             isLoading = false;
             removeLoadingFooter();
-            followingRecyclerViewAdapter.addItems(followees);
+            followerRecyclerViewAdapter.addItems(followers);
         }
 
         private void addLoadingFooter() {
@@ -197,12 +202,13 @@ public class FollowerFragment extends Fragment implements FollowingPresenter.Vie
             int totalItemCount = layoutManager.getItemCount();
             int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-            if (!followingRecyclerViewAdapter.isLoading && followingRecyclerViewAdapter.hasMorePages) {
+            if (!followerRecyclerViewAdapter.isLoading && followerRecyclerViewAdapter.hasMorePages) {
                 if ((visibleItemCount + firstVisibleItemPosition) >=
                         totalItemCount && firstVisibleItemPosition >= 0) {
-                    followingRecyclerViewAdapter.loadMoreItems();
+                    followerRecyclerViewAdapter.loadMoreItems();
                 }
             }
         }
     }
 }
+

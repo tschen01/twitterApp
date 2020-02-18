@@ -10,18 +10,26 @@
     <string name="followingTabTitle">Following</string>
     <string name="followersTabTitle">Followers</string>
 
+    <string name="username_login">Username</string>
+    <string name="password_login">Password</string>
+    <string name="first_name_sign_up">First Name</string>
+    <string name="last_name_sign_up">Last Name</string>
+    <string name="upload_photo">Upload Photo</string>
+
+    <string name="sample_post">Message</string>
+
+    <string name="sign_out">Sign Out</string>
+
+    <string name="post">Post</string>
+    <string name="post_prompt">Post a new Status:</string>
+    <string name="post_hint">Write something here</string>
+
+
+    <string name="follow_button">Follow</string>
+    <string name="unfollow_button">Unfollow</string>
+
+
+
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
-    <string name="server_host" >Host</string>
-    <string name="server_port" >Port</string>
-    <string name="user_name" >Username</string>
-    <string name="password" >password</string>
-    <string name="first_name"  >firstName</string>
-    <string name="last_name"  >LastName</string>
-    <string name="email"  >email</string>
-    <string name="gender"  >gender</string>
-    <string name="male"  >male</string>
-    <string name="female"  >female</string>
-    <string name="loginButton"  >Login</string>
-    <string name="registerButton"  >Register</string>
 </resources>

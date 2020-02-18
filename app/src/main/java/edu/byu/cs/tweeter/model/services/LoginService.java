@@ -10,6 +10,7 @@ public class LoginService {
     private static LoginService instance;
     private final ServerFacade serverFacade;
     private User currentUser;
+    private User loggedInUser;
 
     public static LoginService getInstance() {
         if(instance == null) {
@@ -19,19 +20,7 @@ public class LoginService {
         return instance;
     }
 
-    public LoginService() {
-        serverFacade = new ServerFacade();
-    }
-
-//    public LoginService(LoginRequest request) {
-//        // TODO: Remove when the actual login functionality exists.
-//        System.out.println("HIIIIIIIIIIIII" + request.getFirstName());
-//        currentUser = new User(request.getFirstName(), request.getLastName(),
-//                "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
-//        instance = this;
-//        serverFacade = new ServerFacade();
-//        setCurrentUser(currentUser);
-//    }
+    private LoginService() {serverFacade = ServerFacade.getInstance();}
 
     public User getCurrentUser() {
         return currentUser;
@@ -41,10 +30,28 @@ public class LoginService {
         this.currentUser = currentUser;
     }
 
-    public LoginResponse login(LoginRequest request){
-        Boolean login = true;
-        LoginResponse response = serverFacade.getLoginUser(request);
-        setCurrentUser(response.getUser());
-        return response;
+    public User getLoggedInUser() {
+        return this.loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
+    public LoginResponse authenticateUser(LoginRequest loginRequest){
+        LoginResponse loginResponse = serverFacade.authenticateUser(loginRequest);
+        if (loginResponse.isError()){
+            return loginResponse;
+        }
+        else {
+            currentUser = loginResponse.getUser();
+            setCurrentUser(currentUser);
+            setLoggedInUser(currentUser);
+            return loginResponse;
+        }
+    }
+
+    public User aliasToUser(String alias){
+        return serverFacade.aliasToUser(alias);
     }
 }

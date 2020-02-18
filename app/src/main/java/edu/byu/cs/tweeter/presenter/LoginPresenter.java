@@ -1,11 +1,12 @@
 package edu.byu.cs.tweeter.presenter;
 
-import edu.byu.cs.tweeter.model.domain.User;
+import android.view.View;
+
 import edu.byu.cs.tweeter.model.services.LoginService;
 import edu.byu.cs.tweeter.net.request.LoginRequest;
+import edu.byu.cs.tweeter.net.response.LoginResponse;
 
 public class LoginPresenter extends Presenter {
-
     private final View view;
 
     /**
@@ -13,14 +14,16 @@ public class LoginPresenter extends Presenter {
      */
     public interface View {
         // If needed, Specify methods here that will be called on the view in response to model updates
+        void login(android.view.View v);
+        void signUp(android.view.View v);
     }
 
     public LoginPresenter(View view) {
         this.view = view;
     }
 
-    public User setCurrentUser(LoginRequest request){
-
-        return LoginService.getInstance().login(request).getUser();
+    public LoginResponse loginUser(LoginRequest loginRequest){
+        LoginResponse loginResponse = LoginService.getInstance().authenticateUser(loginRequest);
+        return loginResponse;
     }
 }

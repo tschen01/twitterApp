@@ -1,18 +1,27 @@
 package edu.byu.cs.tweeter.net.request;
 
 public class LoginRequest {
-    private String firstName;
-    private String lastName;
+    private String username;
+    private String password;
 
-    public LoginRequest(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public LoginRequest(String username, String password){
+        this.username = username;
+        this.password = password;
     }
 
-    public String getFirstName(){
-        return firstName;
+    public String getUsername() {
+        return username;
     }
-    public String getLastName(){
-        return lastName;
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

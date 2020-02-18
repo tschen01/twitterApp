@@ -12,7 +12,6 @@ import java.util.Set;
 
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.presenter.Presenter;
 
 /**
  * A temporary class that generates and returns Follow objects. This class may be removed when the
@@ -21,7 +20,6 @@ import edu.byu.cs.tweeter.presenter.Presenter;
 public class FollowGenerator {
 
     private static FollowGenerator followGenerator;
-    private User user;
 
     /**
      * An enum used to specify the sort order of {@link Follow} object returned by this generator.
@@ -36,16 +34,16 @@ public class FollowGenerator {
      * A private constructor that ensures no instances of this class can be created from outside
      * the class.
      */
-    private FollowGenerator(User user) {this.user = user;}
+    private FollowGenerator() {}
 
     /**
      * Returns the singleton instance of the class
      *
      * @return the instance.
      */
-    public static FollowGenerator getInstance(User user) {
+    public static FollowGenerator getInstance() {
         if(followGenerator == null) {
-            followGenerator = new FollowGenerator(user);
+            followGenerator = new FollowGenerator();
         }
 
         return followGenerator;
@@ -93,6 +91,7 @@ public class FollowGenerator {
         assert minFollowersPerUser >= 0 : minFollowersPerUser;
         assert maxFollowersPerUser < users.size() : maxFollowersPerUser;
 
+
         // For each user, generate a random number of followers between the specified min and max
         Random random = new Random();
         for(User user : users) {
@@ -103,11 +102,18 @@ public class FollowGenerator {
         }
 
         // Add the test user and make him follow everyone
-        User testUser = new User(user.getFirstName(),user.getLastName(), UserGenerator.MALE_IMAGE_URL);
+        User testUser = new User("Test", "User", UserGenerator.MALE_IMAGE_URL);
+
+        int index = 0;
 
         for(User user : users) {
             Follow follow = new Follow(testUser, user);
+            if (index % 3 == 0) {
+                Follow follow2 = new Follow(user, testUser);
+                follows.add(follow2);
+            }
             follows.add(follow);
+            index++;
         }
 
         // Sort by the specified sort order

@@ -1,44 +1,40 @@
 package edu.byu.cs.tweeter.view.asyncTasks;
 
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import java.io.IOException;
-
-import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.net.request.LoginRequest;
 import edu.byu.cs.tweeter.net.response.LoginResponse;
 import edu.byu.cs.tweeter.presenter.LoginPresenter;
-import edu.byu.cs.tweeter.view.util.ImageUtils;
 
-public class LoginTask extends AsyncTask<LoginRequest, Void, User> {
+public class LoginTask extends AsyncTask<LoginRequest, Void, LoginResponse> {
 
-    private final LoginPresenter presenter; // dont need to create
-    private final GetLoginObserver observer;
+    private LoginContext context;
+    private LoginPresenter presenter;
 
-    public LoginTask(LoginPresenter presenter, GetLoginObserver observer) {
-        this.presenter = presenter;
-        this.observer = observer;
+    ///////// Interface //////////
+    public interface LoginContext {
+        void onExecuteComplete(String message, Boolean error);
     }
 
-    public interface GetLoginObserver {
-        void loginRetrieved(User user);
+    // ========================== Constructor ========================================
+    public LoginTask(LoginContext c, LoginPresenter p)
+    {
+        presenter = p;
+        context = c;
     }
 
-
-//    public LoginTask(LoginPresenter presenter){this.presenter = presenter;}
-
+    //--****************-- Do In Background --***************--
     @Override
-    protected User doInBackground(LoginRequest... loginRequests) {
-        User result = presenter.setCurrentUser(loginRequests[0]);
-        return result;
+    protected LoginResponse doInBackground(LoginRequest... logReqs)
+    {
+        LoginResponse loginResponse = presenter.loginUser(logReqs[0]);
+        return loginResponse;
     }
 
+    //--****************-- On Post Execute --***************--
     @Override
-    protected void onPostExecute(User result) {
-        if(observer != null) {
-            observer.loginRetrieved(result);
-        }
+    protected void onPostExecute(LoginResponse loginResponse)
+    {
+            context.onExecuteComplete(loginResponse.getMessage(), loginResponse.isError());
     }
 }

@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.view.main.following;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,11 +22,13 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.services.LoginService;
 import edu.byu.cs.tweeter.net.request.FollowingRequest;
 import edu.byu.cs.tweeter.net.response.FollowingResponse;
 import edu.byu.cs.tweeter.presenter.FollowingPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetFollowingTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
+import edu.byu.cs.tweeter.view.main.MainActivity;
 
 public class FollowingFragment extends Fragment implements FollowingPresenter.View {
 
@@ -65,7 +68,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         private final TextView userAlias;
         private final TextView userName;
 
-        FollowingHolder(@NonNull View itemView) {
+        FollowingHolder(@NonNull final View itemView) {
             super(itemView);
 
             userImage = itemView.findViewById(R.id.userImage);
@@ -76,9 +79,15 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getContext(), "You selected '" + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                    LoginService.getInstance().setCurrentUser(presenter.getUserByAlias(userAlias.getText().toString()));
+
+                    Intent intent = new Intent(view.getContext(), MainActivity.class);
+                    itemView.getContext().startActivity(intent);
                 }
             });
         }
+
+
 
         void bindUser(User user) {
             userImage.setImageDrawable(ImageCache.getInstance().getImageDrawable(user));
@@ -91,7 +100,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
 
         private final List<User> users = new ArrayList<>();
 
-        private edu.byu.cs.tweeter.model.domain.User lastFollowee;
+        private User lastFollowee;
 
         private boolean hasMorePages;
         private boolean isLoading = false;

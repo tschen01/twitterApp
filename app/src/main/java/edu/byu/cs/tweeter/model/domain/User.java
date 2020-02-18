@@ -2,6 +2,7 @@ package edu.byu.cs.tweeter.model.domain;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 
 public class User implements Comparable<User> {
@@ -18,7 +19,12 @@ public class User implements Comparable<User> {
     public User(@NotNull String firstName, @NotNull String lastName, @NotNull String alias, String imageURL) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.alias = alias;
+        if (alias.contains("@")){
+            this.alias = alias;
+        }
+        else {
+            this.alias = String.format("@%s", alias);
+        }
         this.imageUrl = imageURL;
     }
 
@@ -38,7 +44,8 @@ public class User implements Comparable<User> {
         return alias;
     }
 
-    public String getImageUrl() {
+    public String getImageUrl()
+    {
         return imageUrl;
     }
 

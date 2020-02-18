@@ -11,25 +11,62 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="?actionBarSize"
-            android:padding="@dimen/appbar_padding"
-            android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
-        <Button
-            android:id="@+id/signout_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="signout"
-            android:background="@color/colorBlue"
-            android:layout_marginRight="10dp"
-            android:paddingRight="20dp"
-            android:textColor="@color/button_text_color"
-            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="?actionBarSize"
+                android:padding="@dimen/appbar_padding"
+                android:text="@string/app_name"
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/follow_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="57dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintEnd_toStartOf="@+id/signOutButton"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/title"
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="followUser"/>
+
+            <Button
+                android:id="@+id/signOutButton"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="197dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/sign_out"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/goUser"
+                android:layout_width="53dp"
+                android:layout_height="53dp"
+                android:text="Go"
+                android:onClick="goUser"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/follow_toggle"
+                app:layout_constraintHorizontal_bias="0.406"
+                app:layout_constraintStart_toEndOf="@+id/title"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -38,40 +75,40 @@
                 android:id="@+id/userImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/userImage"
-                android:layout_centerVertical="true">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/homePageTitle"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/userAlias"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/homePageTitle"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp" />
 
             </LinearLayout>
 
         </RelativeLayout>
-
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

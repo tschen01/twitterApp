@@ -99,9 +99,9 @@ public class UserGenerator {
 
             connection.disconnect();
         } finally {
-           if(connection != null) {
-               connection.disconnect();
-           }
+            if(connection != null) {
+                connection.disconnect();
+            }
         }
 
         return names == null ? null : names.getNames();
