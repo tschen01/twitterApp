@@ -1,6 +1,8 @@
 package edu.byu.cs.tweeter.presenter;
 
+import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.services.FeedService;
+import edu.byu.cs.tweeter.model.services.LoginService;
 import edu.byu.cs.tweeter.net.request.FeedRequest;
 import edu.byu.cs.tweeter.net.response.FeedResponse;
 
@@ -22,4 +24,5 @@ public class FeedPresenter extends Presenter {
     public FeedResponse getFeed(FeedRequest request) {
         return FeedService.getInstance().getFeed(request);
     }
+//    public User getUserByAlias(String alias) { return LoginService.getInstance().mentionToUser(alias); }
 }

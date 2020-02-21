@@ -3,6 +3,8 @@ package edu.byu.cs.tweeter.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.services.LoginService;
 import edu.byu.cs.tweeter.model.services.StoryService;
 import edu.byu.cs.tweeter.net.ServerFacade;
 import edu.byu.cs.tweeter.net.request.StoryRequest;
@@ -26,4 +28,5 @@ public class StoryPresenter extends Presenter {
     public StoryResponse getStory(StoryRequest storyRequest){
         return StoryService.getInstance().getStory(storyRequest);
     }
+//    public User getUserByAlias(String alias) { return LoginService.getInstance().mentionToUser(alias); }
 }

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,19 +67,19 @@ public class FeedFragment extends Fragment implements FeedPresenter.View{
 
 
     private class StatusHolder extends RecyclerView.ViewHolder {
-
         private final ImageView userImage;
         private final TextView userAlias;
         private final TextView userName;
         private final TextView message;
+        private final TextView timestamp;
 
         StatusHolder(@NonNull final View itemView) {
             super(itemView);
-
             userImage = itemView.findViewById(R.id.userImage);
             userAlias = itemView.findViewById(R.id.userAlias);
             userName = itemView.findViewById(R.id.userName);
             message = itemView.findViewById(R.id.message);
+            timestamp = itemView.findViewById(R.id.timestamp);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,65 +98,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View{
             userAlias.setText(status.getUser().getAlias());
             userName.setText(status.getUser().getName());
             message.setText(status.getMessage());
-
-            String messageCopy = message.getText().toString();
-            SpannableString ss = new SpannableString(messageCopy);
-
-            //--------------- User mentions
-            ClickableSpan userMentionsSpan = new ClickableSpan() {
-                @Override
-                public void onClick(View textView) {        //TODO: CHANGE SERVER FACADE TO ONLY DO SO MANY STATUSES
-                    TextView tx = (TextView) textView;
-                    String s = tx.getText().toString();
-                    User newUser = presenter.getUserByAlias(tx.getText().toString());
-                    if(newUser != null){
-                        LoginService.getInstance().setCurrentUser(newUser);
-
-                        Intent intent = new Intent(textView.getContext(), MainActivity.class);
-                        itemView.getContext().startActivity(intent);
-                    }
-                    else {
-                        Toast.makeText(getContext(), tx.getText().toString() + " does not exist!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            };
-
-            //-------------- Links
-            ClickableSpan linksSpan = new ClickableSpan() {
-                @Override
-                public void onClick(View textView) {
-                    TextView tx = (TextView) textView;
-                    String url = tx.getText().toString();
-
-                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                        url = "http://" + url;
-                    }
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(browserIntent);
-                }
-            };
-
-
-            List<String> userMentions = status.getUserMentions();
-            List<String> links = status.getLinks();
-
-            for(int i = 0; i < userMentions.size(); i++){
-                int beginningIndex = messageCopy.indexOf(userMentions.get(i));
-                int endingIndex = userMentions.get(i).length() + beginningIndex;
-
-                ss.setSpan(userMentionsSpan, beginningIndex, endingIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
-            for(int i = 0; i < links.size(); i++){
-                int beginningIndex = messageCopy.indexOf(links.get(i));
-                int endingIndex = links.get(i).length() + beginningIndex;
-
-                ss.setSpan(linksSpan, beginningIndex, endingIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
-            message.setText(ss);
-            message.setMovementMethod(LinkMovementMethod.getInstance());
-            message.setHighlightColor(Color.BLUE);
+            timestamp.setText(status.getTimeStamp().toString());
         }
     }
 

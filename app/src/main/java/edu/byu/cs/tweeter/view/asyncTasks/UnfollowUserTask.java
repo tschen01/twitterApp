@@ -3,35 +3,41 @@ package edu.byu.cs.tweeter.view.asyncTasks;
 import android.os.AsyncTask;
 
 import edu.byu.cs.tweeter.model.domain.Follow;
+import edu.byu.cs.tweeter.net.response.FollowResponse;
+import edu.byu.cs.tweeter.net.response.FollowerResponse;
 import edu.byu.cs.tweeter.net.response.UnfollowResponse;
-import edu.byu.cs.tweeter.presenter.MainPresenter;
+import edu.byu.cs.tweeter.presenter.FollowPresenter;
+import edu.byu.cs.tweeter.presenter.UnFollowPresenter;
 
 public class UnfollowUserTask extends AsyncTask<Follow, Void, UnfollowResponse> {
 
-    private UnfollowUserContext context;
-    private MainPresenter presenter;
+    private getUnFollowObserver observer;
+    private UnFollowPresenter presenter;
 
-    ///////// Interface //////////
-    public interface UnfollowUserContext {
-        void onUnfollowComplete(String message, Boolean error);
+    public interface getUnFollowObserver {
+        void unfollowRetrieved(UnfollowResponse loginResponse);
     }
 
-    public UnfollowUserTask(UnfollowUserContext c, MainPresenter p)
+    public UnfollowUserTask(UnFollowPresenter presenter, getUnFollowObserver observer )
     {
-        presenter = p;
-        context = c;
+        this.presenter = presenter;
+        this.observer = observer;
     }
 
     @Override
     protected UnfollowResponse doInBackground(Follow ...follow)
     {
-        UnfollowResponse response = presenter.unFollowUser(follow[0]);
+        UnfollowResponse response = presenter.unfollowUser(follow[0]);
         return response;
     }
 
     @Override
-    protected void onPostExecute(UnfollowResponse signOutResponse)
+    protected void onPostExecute(UnfollowResponse loginResponse)
     {
-        context.onUnfollowComplete(signOutResponse.getMessage(), signOutResponse.isSuccess());
+        if(observer!= null){
+            observer.unfollowRetrieved(loginResponse);
+        }
     }
 }
+
+

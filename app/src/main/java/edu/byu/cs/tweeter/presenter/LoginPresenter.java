@@ -23,7 +23,7 @@ public class LoginPresenter extends Presenter {
     }
 
     public LoginResponse loginUser(LoginRequest loginRequest){
-        LoginResponse loginResponse = LoginService.getInstance().authenticateUser(loginRequest);
+        LoginResponse loginResponse = LoginService.getInstance().CheckUser(loginRequest);
         return loginResponse;
     }
 }

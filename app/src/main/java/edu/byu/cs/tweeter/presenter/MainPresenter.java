@@ -27,22 +27,9 @@ public class MainPresenter extends Presenter {
         this.view = view;
     }
 
-    public SignOutResponse signOut(){
-        LoginService.getInstance().setCurrentUser(null);
-        LoginService.getInstance().setLoggedInUser(null);
-        return new SignOutResponse(true, "Logged out!");
-    }
 
     public boolean isFollowing(Follow follow){
         return FollowingService.getInstance().isFollowing(follow);
-    }
-
-    public FollowResponse followUser(Follow follow){
-        return FollowingService.getInstance().followUser(follow);
-    }
-
-    public UnfollowResponse unFollowUser(Follow follow) {
-        return FollowingService.getInstance().unfollowUser(follow);
     }
 
 }

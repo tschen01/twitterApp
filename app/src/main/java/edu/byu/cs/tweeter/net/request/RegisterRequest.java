@@ -5,7 +5,7 @@ import android.util.Base64;
 
 import java.net.URI;
 
-public class SignUpRequest {
+public class RegisterRequest {
 
     private String username;
     private String password;
@@ -13,7 +13,7 @@ public class SignUpRequest {
     private String lastName;
     private String image;
 
-    public SignUpRequest(String username, String password, String firstName, String lastName, String image){
+    public RegisterRequest(String username, String password, String firstName, String lastName, String image){
         this.username = username;
         this.password = password;
         this.firstName = firstName;

@@ -1,7 +1,9 @@
 package edu.byu.cs.tweeter.presenter;
 
+import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.services.FollowerService;
 import edu.byu.cs.tweeter.model.services.FollowingService;
+import edu.byu.cs.tweeter.model.services.LoginService;
 import edu.byu.cs.tweeter.net.request.FollowerRequest;
 import edu.byu.cs.tweeter.net.request.FollowingRequest;
 import edu.byu.cs.tweeter.net.response.FollowerResponse;
@@ -25,4 +27,5 @@ public class FollowerPresenter extends Presenter {
     public FollowerResponse getFollowing(FollowerRequest request) {
         return FollowerService.getInstance().getFollowers(request);
     }
+//    public User getUserByAlias(String alias) { return LoginService.getInstance().mentionToUser(alias); }
 }

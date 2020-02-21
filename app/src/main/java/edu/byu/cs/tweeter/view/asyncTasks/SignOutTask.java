@@ -4,33 +4,36 @@ import android.os.AsyncTask;
 
 import edu.byu.cs.tweeter.net.response.SignOutResponse;
 import edu.byu.cs.tweeter.presenter.MainPresenter;
+import edu.byu.cs.tweeter.presenter.SignOutPresenter;
+import edu.byu.cs.tweeter.presenter.SignUpPresenter;
 
 public class SignOutTask extends AsyncTask<Void, Void, SignOutResponse> {
 
-    private SignOutContext context;
-    private MainPresenter presenter;
+    private getSignOutObserver observer;
+    private SignOutPresenter presenter;
 
-    ///////// Interface //////////
-    public interface SignOutContext {
-        void onExecuteComplete(String message, Boolean error);
+    public interface getSignOutObserver {
+        void signOutRetrieved(SignOutResponse postResponse);
     }
 
-    public SignOutTask(SignOutContext c, MainPresenter p)
+    public SignOutTask( SignOutPresenter presenter, getSignOutObserver observer)
     {
-        presenter = p;
-        context = c;
+        this.presenter = presenter;
+        this.observer = observer;
     }
 
     @Override
     protected SignOutResponse doInBackground(Void ...params)
     {
-        SignOutResponse signUpResponse = presenter.signOut();
+        SignOutResponse signUpResponse = presenter.signOutUser();
         return signUpResponse;
     }
 
     @Override
     protected void onPostExecute(SignOutResponse signOutResponse)
     {
-        context.onExecuteComplete(signOutResponse.getMessage(), signOutResponse.isSuccess());
+        if(observer!= null){
+            observer.signOutRetrieved(signOutResponse);
+        }
     }
 }

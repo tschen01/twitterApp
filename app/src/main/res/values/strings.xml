@@ -32,4 +32,13 @@
 
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
+    <string name="app">Twitter</string>
+    <string name="login">Username</string>
+    <string name="username">Twitter Username</string>
+    <string name="password">Password you created</string>
+    <string name="firstName">Your First Name</string>
+    <string name="LastName">Your Last Name</string>
+    <string name="message">Status</string>
+    <string name="status_hint">How are you feeling???</string>
+    <string name="timeStamp">TIME:</string>
 </resources>

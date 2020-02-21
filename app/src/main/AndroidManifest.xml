@@ -18,7 +18,7 @@
         </activity>
 
         <activity
-            android:name=".view.main.LoginActivity"
+            android:name=".view.main.Activities.LoginActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -30,18 +30,7 @@
 
 
         <activity
-            android:name=".view.main.PostActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".view.main.SearchActivity"
+            android:name=".view.main.Activities.PostActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -53,7 +42,7 @@
 
 
         <activity
-            android:name=".view.main.SignUpActivity"
+            android:name=".view.main.Activities.RegisterActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

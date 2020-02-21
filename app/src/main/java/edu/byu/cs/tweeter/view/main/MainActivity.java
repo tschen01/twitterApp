@@ -5,23 +5,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,26 +20,32 @@ import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.services.LoginService;
+import edu.byu.cs.tweeter.net.response.FollowResponse;
+import edu.byu.cs.tweeter.net.response.FollowerResponse;
 import edu.byu.cs.tweeter.net.response.SignOutResponse;
+import edu.byu.cs.tweeter.net.response.UnfollowResponse;
+import edu.byu.cs.tweeter.presenter.FollowPresenter;
 import edu.byu.cs.tweeter.presenter.MainPresenter;
-import edu.byu.cs.tweeter.presenter.SearchPresenter;
+import edu.byu.cs.tweeter.presenter.SignOutPresenter;
+import edu.byu.cs.tweeter.presenter.UnFollowPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.FollowUserTask;
 import edu.byu.cs.tweeter.view.asyncTasks.LoadImageTask;
-import edu.byu.cs.tweeter.view.asyncTasks.PostTask;
 import edu.byu.cs.tweeter.view.asyncTasks.SignOutTask;
-import edu.byu.cs.tweeter.view.asyncTasks.SignUpTask;
 import edu.byu.cs.tweeter.view.asyncTasks.UnfollowUserTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
+import edu.byu.cs.tweeter.view.main.Activities.LoginActivity;
+import edu.byu.cs.tweeter.view.main.Activities.PostActivity;
 
-public class MainActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, MainPresenter.View, SignOutTask.SignOutContext, FollowUserTask.FollowUserContext, UnfollowUserTask.UnfollowUserContext {
+public class MainActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, MainPresenter.View, SignOutTask.getSignOutObserver, FollowUserTask.getFollowObserver, UnfollowUserTask.getUnFollowObserver, FollowPresenter.View, UnFollowPresenter.View, SignOutPresenter.View {
 
+    private FollowPresenter followPresenter = new FollowPresenter(this);
+    private UnFollowPresenter unfollowPresenter = new UnFollowPresenter(this);
+    private SignOutPresenter signOutPresenter = new SignOutPresenter(this);
     private MainPresenter presenter;
     private User user;
     private ImageView userImageView;
     private Button signOutButton;
     private Button followButton;
-    private Button userSearch;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
 
         signOutButton = findViewById(R.id.signOutButton);
         followButton = findViewById(R.id.follow_toggle);
-        userSearch = findViewById(R.id.goUser);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
 
     @Override
     public void imageLoadProgressUpdated(Integer progress) {
-        // We're just loading one image. No need to indicate progress.
     }
 
     @Override
@@ -132,15 +127,11 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
         }
     }
 
-    public void goUser(View v){
-        Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     public void signOut()
     {
-        SignOutTask signOutTask = new SignOutTask(this, presenter);
+        SignOutTask signOutTask = new SignOutTask(signOutPresenter,this);
         signOutTask.execute();
     }
 
@@ -153,46 +144,17 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
     @Override
     public void followUser(View v) {
         if (presenter.isFollowing(new Follow(presenter.getLoggedInUser(), presenter.getCurrentUser()))){
-            UnfollowUserTask unfollowUserTask = new UnfollowUserTask(this, presenter);
+            UnfollowUserTask unfollowUserTask = new UnfollowUserTask (unfollowPresenter,this);
             followButton.setText(R.string.follow_button);
             unfollowUserTask.execute(new Follow(presenter.getLoggedInUser(), presenter.getCurrentUser()));
 
 
         }
         else {
-            FollowUserTask followUserTask = new FollowUserTask(this, presenter);
+            FollowUserTask followUserTask = new FollowUserTask( followPresenter, this);
             followButton.setText(R.string.unfollow_button);
             followUserTask.execute(new Follow(presenter.getLoggedInUser(), presenter.getCurrentUser()));
         }
-
-
-
-    }
-
-    @Override
-    public void onExecuteComplete(String message, Boolean success){
-        System.out.println(message);
-        if(!success) {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onFollowComplete(String message, Boolean success)
-    {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onUnfollowComplete(String message, Boolean success)
-    {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -203,4 +165,27 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
         startActivity(intent);
     }
 
+    @Override
+    public void followRetrieved(FollowResponse loginResponse) {
+        Toast.makeText(this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void unfollowRetrieved(UnfollowResponse loginResponse) {
+        Toast.makeText(this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void signOutRetrieved(SignOutResponse postResponse) {
+        if(!postResponse.isSuccess()) {
+            Toast.makeText(this, "failed to sign out", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "sign out success", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        }
+    }
 }

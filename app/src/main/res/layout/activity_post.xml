@@ -16,21 +16,21 @@
             android:layout_width="fill_parent"
             android:layout_height="48dp"
             android:layout_margin="16dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorAccent"
             android:gravity="center"
             android:text="@string/post_prompt"
-            android:textSize="5pt"/>
+            android:textSize="15pt" />
 
         <EditText
             android:id="@+id/postMessage"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_width="362dp"
+            android:layout_height="495dp"
+            android:layout_margin="16dp"
             android:ems="10"
             android:gravity="start|top"
+            android:hint="@string/status_hint"
             android:inputType="textMultiLine"
-            android:layout_margin="16dp"
-            android:textSize="8pt"
-            android:hint="@string/post_hint"/>
+            android:textSize="8pt" />
 
         <Button
             android:id="@+id/postButton"

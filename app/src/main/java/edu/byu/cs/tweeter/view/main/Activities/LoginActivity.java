@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.main;
+package edu.byu.cs.tweeter.view.main.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,57 +10,52 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.net.request.LoginRequest;
+import edu.byu.cs.tweeter.net.response.LoginResponse;
 import edu.byu.cs.tweeter.presenter.LoginPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.LoginTask;
+import edu.byu.cs.tweeter.view.main.MainActivity;
 
-public class LoginActivity extends AppCompatActivity implements LoginPresenter.View, LoginTask.LoginContext {
+public class LoginActivity extends AppCompatActivity implements LoginPresenter.View, LoginTask.getLoginObserver {
 
-    private EditText mUsername;
-    private EditText mPassword;
-
+    private EditText Username;
+    private EditText Password;
     private LoginPresenter presenter;
 
-    private Button mLoginButton;
-    private Button mSignUpButton;
-
-    //________________________ onCreate and other Fragment functions ____________________________________
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
         presenter = new LoginPresenter(this);
 
-        mUsername = this.findViewById(R.id.usernameInput);
-        mPassword = this.findViewById(R.id.passwordInput);
+        Username = this.findViewById(R.id.usernameInput);
+        Password = this.findViewById(R.id.passwordInput);
 
     }
 
     @Override
     public void login(View v){
-        LoginTask loginTask = new LoginTask(this, presenter);
-        LoginRequest loginRequest = new LoginRequest(mUsername.getText().toString(), mPassword.getText().toString());
-
+        LoginTask loginTask = new LoginTask(presenter,this);
+        LoginRequest loginRequest = new LoginRequest(Username.getText().toString(), Password.getText().toString());
         loginTask.execute(loginRequest);
     }
 
     @Override
-    public void signUp(View v){
-        Intent intent = new Intent(this, SignUpActivity.class);
+    public void signUp(View v) {
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
     @Override
-    public void onExecuteComplete(String message, Boolean error){
-        System.out.println(message);
-        if(error) {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void loginRetrieved(LoginResponse loginResponse) {
+        System.out.println(loginResponse.getMessage());
+        if(loginResponse.isError()){
+            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
     }
-
 }

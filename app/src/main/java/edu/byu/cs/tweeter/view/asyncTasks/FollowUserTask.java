@@ -4,23 +4,22 @@ import android.os.AsyncTask;
 
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.net.response.FollowResponse;
-import edu.byu.cs.tweeter.presenter.FollowingPresenter;
-import edu.byu.cs.tweeter.presenter.MainPresenter;
+import edu.byu.cs.tweeter.net.response.FollowerResponse;
+import edu.byu.cs.tweeter.presenter.FollowPresenter;
 
 public class FollowUserTask extends AsyncTask<Follow, Void, FollowResponse> {
 
-    private FollowUserContext context;
-    private MainPresenter presenter;
+    private getFollowObserver observer;
+    private FollowPresenter presenter;
 
-    ///////// Interface //////////
-    public interface FollowUserContext {
-        void onFollowComplete(String message, Boolean error);
+    public interface getFollowObserver {
+        void followRetrieved(FollowResponse loginResponse);
     }
 
-    public FollowUserTask(FollowUserContext c, MainPresenter p)
+    public FollowUserTask(FollowPresenter presenter, getFollowObserver observer )
     {
-        presenter = p;
-        context = c;
+        this.presenter = presenter;
+        this.observer = observer;
     }
 
     @Override
@@ -31,8 +30,12 @@ public class FollowUserTask extends AsyncTask<Follow, Void, FollowResponse> {
     }
 
     @Override
-    protected void onPostExecute(FollowResponse signOutResponse)
+    protected void onPostExecute(FollowResponse loginResponse)
     {
-        context.onFollowComplete(signOutResponse.getMessage(), signOutResponse.isSuccess());
+        if(observer!= null){
+            observer.followRetrieved(loginResponse);
+        }
     }
 }
+
+

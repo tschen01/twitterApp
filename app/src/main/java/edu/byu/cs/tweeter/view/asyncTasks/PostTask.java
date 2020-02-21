@@ -7,18 +7,17 @@ import edu.byu.cs.tweeter.presenter.PostPresenter;
 
 public class PostTask extends AsyncTask<String, Void, PostResponse> {
 
-    private PostContext context;
+    private getPostObserver observer;
     private PostPresenter presenter;
 
-    ///////// Interface //////////
-    public interface PostContext {
-        void onExecuteComplete(String message, Boolean error);
+    public interface getPostObserver {
+        void postRetrieved(PostResponse postResponse);
     }
 
-    public PostTask(PostContext c, PostPresenter p)
+    public PostTask(PostPresenter presenter, getPostObserver observer )
     {
-        presenter = p;
-        context = c;
+        this.presenter = presenter;
+        this.observer = observer;
     }
 
     @Override
@@ -29,8 +28,10 @@ public class PostTask extends AsyncTask<String, Void, PostResponse> {
     }
 
     @Override
-    protected void onPostExecute(PostResponse signOutResponse)
+    protected void onPostExecute(PostResponse loginResponse)
     {
-        context.onExecuteComplete(signOutResponse.getMessage(), signOutResponse.isSuccess());
+        if(observer!= null){
+            observer.postRetrieved(loginResponse);
+        }
     }
 }

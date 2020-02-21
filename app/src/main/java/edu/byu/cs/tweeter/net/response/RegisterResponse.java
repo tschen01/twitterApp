@@ -1,11 +1,11 @@
 package edu.byu.cs.tweeter.net.response;
 
-public class SignUpResponse {
+public class RegisterResponse {
 
     private String message;
     private boolean error;
 
-    public SignUpResponse(String message, boolean error) {
+    public RegisterResponse(String message, boolean error) {
         this.message = message;
         this.error = error;
     }
@@ -22,7 +22,4 @@ public class SignUpResponse {
         return error;
     }
 
-    public void setError(boolean error) {
-        this.error = error;
-    }
 }

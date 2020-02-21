@@ -39,6 +39,13 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             tools:text="@string/sample_post"/>
+
+        <TextView
+            android:id="@+id/timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            tools:text="@string/timeStamp"/>
     </LinearLayout>
 
 

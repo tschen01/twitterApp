@@ -101,7 +101,6 @@ public class FollowGenerator {
             generateFollowersForUser(numbFollowersToGenerate, user, users, follows);
         }
 
-        // Add the test user and make him follow everyone
         User testUser = new User("Test", "User", UserGenerator.MALE_IMAGE_URL);
 
         int index = 0;
